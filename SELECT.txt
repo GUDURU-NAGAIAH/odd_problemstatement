@@ -1,0 +1,13 @@
+SELECT 
+    p.AMOUNT AS SALARY,
+    e.FIRST_NAME || ' ' || e.LAST_NAME AS NAME,
+    (CAST(strftime('%Y', p.PAYMENT_TIME) AS INTEGER) 
+     - CAST(strftime('%Y', e.DOB) AS INTEGER) 
+     - (strftime('%m-%d', p.PAYMENT_TIME) < strftime('%m-%d', e.DOB))) AS AGE,
+    d.DEPARTMENT_NAME
+FROM PAYMENTS p
+JOIN EMPLOYEE e ON e.EMP_ID = p.EMP_ID
+JOIN DEPARTMENT d ON d.DEPARTMENT_ID = e.DEPARTMENT
+WHERE CAST(strftime('%d', p.PAYMENT_TIME) AS INTEGER) <> 1
+ORDER BY p.AMOUNT DESC
+LIMIT 1;
